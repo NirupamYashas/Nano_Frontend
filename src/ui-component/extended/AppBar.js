@@ -82,7 +82,7 @@ const AppBar = ({ ...others }) => {
                             </Button> */}
                             <Button
                                 component={RouterLink}
-                                to="/dashboard/single-input"
+                                to="/dashboard/delivery-efficiency"
                                 disableElevation
                                 variant="contained"
                                 color="secondary"

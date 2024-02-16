@@ -6,9 +6,7 @@ import Loadable from 'ui-component/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 
 // dashboard routing
-const DashboardSamplePage = Loadable(lazy(() => import('views/dashboard/sample-page')));
-const DashboardFileInputPage = Loadable(lazy(() => import('views/dashboard/file-input')));
-const DashboardSingleInputPage = Loadable(lazy(() => import('views/dashboard/single-input')));
+const DashboardSingleInputPage = Loadable(lazy(() => import('views/dashboard/Delivery_Efficiency')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -21,16 +19,8 @@ const MainRoutes = {
     ),
     children: [
         {
-            path: '/dashboard/sample-page',
-            element: <DashboardSamplePage />
-        },
-        {
-            path: '/dashboard/single-input',
+            path: '/dashboard/delivery-efficiency',
             element: <DashboardSingleInputPage />
-        },
-        {
-            path: '/dashboard/file-input',
-            element: <DashboardFileInputPage />
         }
     ]
 };

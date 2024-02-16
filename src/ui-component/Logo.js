@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
  * import logo from 'assets/images/logo.svg';
  *
  */
-import logo from 'assets/images/logo.png';
+import logo from 'assets/images/nano-logo.png';
 // ==============================|| LOGO SVG ||============================== //
 
 const Logo = () => {

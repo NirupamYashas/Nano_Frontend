@@ -28,19 +28,11 @@ const dashboard = {
         //     breadcrumbs: false
         // },
         {
-            id: 'singleinput',
-            title: <FormattedMessage id="singleinput" />,
+            id: 'deliveryefficiency',
+            title: <FormattedMessage id="deliveryefficiency" />,
             type: 'item',
-            url: '/dashboard/single-input',
+            url: '/dashboard/delivery-efficiency',
             icon: icons.IconTimeline,
-            breadcrumbs: false
-        },
-        {
-            id: 'fileinput',
-            title: <FormattedMessage id="fileinput" />,
-            type: 'item',
-            url: '/dashboard/file-input',
-            icon: icons.IconFolder,
             breadcrumbs: false
         }
     ]
