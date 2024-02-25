@@ -13,7 +13,7 @@ RUN npm run build
 
 FROM nginx 
 EXPOSE 3000
-COPY ./nginx/aiqsar.conf /etc/nginx/conf.d/aiqsar.conf
+COPY ./nginx/aiqsarnano.conf /etc/nginx/conf.d/aiqsarnano.conf
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 #
 # COPY ./certs/devopsbyexample.pem /etc/nginx/certs/devopsbyexample.pem
