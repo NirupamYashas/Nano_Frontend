@@ -30,7 +30,7 @@ const initialFormData = {
     CT: '',
     TM: '',
     Shape: '',
-    Size: 0.431364,
+    Size: 2.7,
     ZetaPotential: -59.4,
     Admin: 0.0
 };
@@ -66,7 +66,7 @@ const SamplePage = () => {
     const handleSizeInputChange = (event) => {
         const newValue = event.target.value === '' ? '' : Number(event.target.value);
         setSizeInput(event.target.value);
-        if (newValue >= 0.431364 && newValue <= 2.659441) {
+        if (newValue >= 2.7 && newValue <= 456.5) {
             setFormData({ ...formData, Size: newValue });
         }
     };
@@ -92,8 +92,19 @@ const SamplePage = () => {
         dispatch(resetAnalysisData());
     };
 
-    const typeOptions = ['INM', 'ONM', 'Hybrid'];
-    const matOptions = ['Gold', 'Iron Oxide', 'Hybrid', 'Silica', 'Polymeric', 'Liposome', 'Hydrogel', 'Dendrimer', 'Other OM', 'Other IM'];
+    const typeOptions = ['Inorganic', 'Organic', 'Hybrid'];
+    const matOptions = [
+        'Gold',
+        'Iron Oxide',
+        'Hybrid',
+        'Silica',
+        'Polymeric',
+        'Liposome',
+        'Hydrogel',
+        'Dendrimer',
+        'Other organic nanomaterial',
+        'Other inorganic nanomaterial'
+    ];
     const tsOptions = ['Active', 'Passive'];
     const ctOptions = [
         'Cervix',
@@ -115,8 +126,29 @@ const SamplePage = () => {
 
     // Function to log formData to console
     const handlePredict = () => {
-        console.log(formData);
-        dispatch(predictDeliveryEfficiency(formData));
+        // Ensure the Size is in log10 before dispatching
+        const updatedFormData = {
+            ...formData,
+            Size: Math.log10(formData.Size)
+        };
+
+        console.log(updatedFormData);
+        dispatch(predictDeliveryEfficiency(updatedFormData));
+    };
+
+    const lowerLimits = {
+        DETumor: 0.0168,
+        DEHeart: 0.0031,
+        DELiver: 0.1653,
+        DESpleen: 0.1008,
+        DELung: 0.0067,
+        DEKidney: 0.0288
+    };
+
+    // Function to format the result
+    const formatResult = (key, value) => {
+        const limit = lowerLimits[key];
+        return value < limit ? 'Not Available' : value.toFixed(8);
     };
 
     return (
@@ -155,7 +187,7 @@ const SamplePage = () => {
                                 </Select>
                             </FormControl>
                             <FormControl variant="outlined" style={{ width: '48%' }}>
-                                <InputLabel id="mat-label">MAT</InputLabel>
+                                <InputLabel id="mat-label">Core Material</InputLabel>
                                 <Select
                                     labelId="mat-label"
                                     id="mat"
@@ -176,7 +208,7 @@ const SamplePage = () => {
                         {/* Row for TS and CT dropdowns */}
                         <Box display="flex" justifyContent="space-between" width="100%" marginBottom="16px">
                             <FormControl variant="outlined" style={{ width: '48%' }}>
-                                <InputLabel id="ts-label">TS</InputLabel>
+                                <InputLabel id="ts-label">Targeting Strategy</InputLabel>
                                 <Select labelId="ts-label" id="ts" name="TS" value={formData.TS} onChange={handleDropdownChange} label="TS">
                                     {tsOptions.map((ts) => (
                                         <MenuItem key={ts} value={ts}>
@@ -186,7 +218,7 @@ const SamplePage = () => {
                                 </Select>
                             </FormControl>
                             <FormControl variant="outlined" style={{ width: '48%' }}>
-                                <InputLabel id="ct-label">CT</InputLabel>
+                                <InputLabel id="ct-label">Cancer Type</InputLabel>
                                 <Select labelId="ct-label" id="ct" name="CT" value={formData.CT} onChange={handleDropdownChange} label="CT">
                                     {ctOptions.map((ct) => (
                                         <MenuItem key={ct} value={ct}>
@@ -200,7 +232,7 @@ const SamplePage = () => {
                         {/* Row for TM and Shape dropdowns */}
                         <Box display="flex" justifyContent="space-between" width="100%" marginBottom="25px">
                             <FormControl variant="outlined" style={{ width: '48%' }}>
-                                <InputLabel id="tm-label">TM</InputLabel>
+                                <InputLabel id="tm-label">Tumor Model</InputLabel>
                                 <Select labelId="tm-label" id="tm" name="TM" value={formData.TM} onChange={handleDropdownChange} label="TM">
                                     {tmOptions.map((tm) => (
                                         <MenuItem key={tm} value={tm}>
@@ -230,14 +262,14 @@ const SamplePage = () => {
 
                         {/* Sliders */}
                         <Box display="flex" flexDirection="column" width="95%" gap="20px" marginBottom="16px" marginLeft="18px">
-                            <Typography gutterBottom> Size </Typography>
+                            <Typography gutterBottom> Hydrodynamic Diameter </Typography>
                             <Slider
                                 value={formData.Size}
                                 onChange={handleSliderChange('Size')}
                                 valueLabelDisplay="auto"
-                                min={0.431364}
-                                max={2.659441}
-                                step={0.000001}
+                                min={2.7}
+                                max={456.5}
+                                step={0.1}
                                 aria-labelledby="size-slider"
                                 sx={{
                                     '& .MuiSlider-track': {
@@ -254,11 +286,11 @@ const SamplePage = () => {
                                 margin="dense"
                                 type="number" // Ensures only numerical input is allowed
                                 InputProps={{
-                                    endAdornment: <InputAdornment position="end">µm</InputAdornment>, // Optional, if you want to add units
+                                    endAdornment: <InputAdornment position="end">nm</InputAdornment>, // Optional, if you want to add units
                                     inputProps: {
-                                        min: 0.431364, // Minimum value, matching the slider
-                                        max: 2.659441, // Maximum value, matching the slider
-                                        step: 0.000001 // Step value, matching the slider
+                                        min: 2.7, // Minimum value, matching the slider
+                                        max: 456.5, // Maximum value, matching the slider
+                                        step: 0.1 // Step value, matching the slider
                                     }
                                 }}
                                 variant="outlined"
@@ -290,7 +322,7 @@ const SamplePage = () => {
                                     endAdornment: <InputAdornment position="end">mV</InputAdornment>
                                 }}
                             />
-                            <Typography gutterBottom> Admin </Typography>
+                            <Typography gutterBottom> Administration Dose </Typography>
                             <Slider
                                 value={formData.Admin}
                                 onChange={handleSliderChange('Admin')}
@@ -320,11 +352,9 @@ const SamplePage = () => {
                         </Box>
 
                         <Box display="flex" justifyContent="center" width="100%" marginTop="20px">
-                            {status !== 'succeeded' && (
-                                <Button variant="contained" color="primary" onClick={handlePredict}>
-                                    Predict
-                                </Button>
-                            )}
+                            <Button variant="contained" color="primary" onClick={handlePredict}>
+                                Predict
+                            </Button>
                         </Box>
                     </Box>
                 </Grid>
@@ -341,19 +371,42 @@ const SamplePage = () => {
                                             Prediction Results:
                                         </Typography>
                                         <Typography className="predicted-value">
+                                            <Box sx={{ width: '100%', mb: 2 }}>
+                                                <Typography
+                                                    style={{ color: 'black', fontSize: '1rem', marginBottom: '16px' }}
+                                                    variant="body1"
+                                                    gutterBottom
+                                                >
+                                                    <strong>NOTE: </strong>
+                                                    1. <strong>*DE </strong>
+                                                    represents delivery efficacy with the unit of percentage of injected dose (%ID).
+                                                </Typography>
+                                                <Typography
+                                                    style={{ color: 'black', fontSize: '1rem', paddingLeft: '8px' }}
+                                                    display="block"
+                                                    variant="body1"
+                                                >
+                                                    2. <strong>Not Available</strong> indicates below the limit of quantification.
+                                                </Typography>
+                                            </Box>
                                             <Grid container spacing={2} justifyContent="center">
-                                                {Object.entries(analysisResult).map(([key, value]) => (
-                                                    <Grid item xs={12} sm={6} md={12} key={key}>
-                                                        <Paper elevation={3} sx={{ p: 2, textAlign: 'center' }}>
-                                                            <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
-                                                                {key.replace(/_/g, ' ')}
-                                                            </Typography>
-                                                            <Typography variant="h4" sx={{ mt: 2 }}>
-                                                                <span style={{ color: '#2196f3' }}> {value.toFixed(8)} </span>
-                                                            </Typography>
-                                                        </Paper>
-                                                    </Grid>
-                                                ))}
+                                                {Object.entries(analysisResult).map(([key, value]) => {
+                                                    const main = key.substring(0, 2);
+                                                    const subscript = key.substring(2);
+                                                    return (
+                                                        <Grid item xs={12} sm={6} md={12} key={key}>
+                                                            <Paper elevation={3} sx={{ p: 2, textAlign: 'center' }}>
+                                                                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+                                                                    {main}
+                                                                    <sub>{subscript}</sub>
+                                                                </Typography>
+                                                                <Typography variant="h4" sx={{ mt: 2 }}>
+                                                                    <span style={{ color: '#2196f3' }}> {formatResult(key, value)} </span>
+                                                                </Typography>
+                                                            </Paper>
+                                                        </Grid>
+                                                    );
+                                                })}
                                             </Grid>
                                         </Typography>
                                     </Box>

@@ -22,6 +22,7 @@ const initialState = {
 // Async thunk for making the prediction API call
 export const predictDeliveryEfficiency = createAsyncThunk('predictDeliveryEfficiency', async (formData, { rejectWithValue }) => {
     try {
+        console.log(formData);
         const response = await axios.post(`${process.env.REACT_APP_API_URL}delivery-efficiency`, formData);
         return response.data;
     } catch (error) {
