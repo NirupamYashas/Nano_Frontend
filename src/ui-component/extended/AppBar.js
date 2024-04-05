@@ -92,7 +92,7 @@ const AppBar = ({ ...others }) => {
                             <Button
                                 color="inherit"
                                 component={Link}
-                                href="https://drive.google.com/file/d/15jNd3z_ejv-_ZeLJ55RAhztwSrrv9eX4/view?usp=sharing"
+                                href="https://drive.google.com/file/d/1L7zPDMwN2Wu6O2DRACMvhFhBMslW-hun/view?usp=sharing"
                                 target="_blank"
                             >
                                 Tutorial
@@ -132,7 +132,7 @@ const AppBar = ({ ...others }) => {
                                             </Link>
                                             <Link
                                                 style={{ textDecoration: 'none' }}
-                                                href="https://drive.google.com/file/d/15jNd3z_ejv-_ZeLJ55RAhztwSrrv9eX4/view?usp=sharing"
+                                                href="https://drive.google.com/file/d/1L7zPDMwN2Wu6O2DRACMvhFhBMslW-hun/view?usp=sharing"
                                                 target="_blank"
                                             >
                                                 <ListItemButton component="a">
